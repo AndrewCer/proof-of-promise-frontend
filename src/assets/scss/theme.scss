@@ -3,20 +3,20 @@
 
 /* For use in src/lib/core/theming/_palette.scss */
 $md-primary: (
-    50 : #f8feeb,
-    100 : #edfdce,
-    200 : #e2fcad,
-    300 : #d6fa8c,
-    400 : #cdf973,
-    500 : #c4f85a,
-    600 : #bef752,
-    700 : #b6f648,
-    800 : #aff53f,
-    900 : #a2f32e,
+    50 : #effbf5,
+    100 : #d7f6e6,
+    200 : #bdf0d6,
+    300 : #a3e9c6,
+    400 : #8fe5b9,
+    500 : #7be0ad,
+    600 : #73dca6,
+    700 : #68d89c,
+    800 : #5ed393,
+    900 : #4bcb83,
     A100 : #ffffff,
-    A200 : #ffffff,
-    A400 : #eaffce,
-    A700 : #dfffb4,
+    A200 : #f2fff8,
+    A400 : #bfffda,
+    A700 : #a6ffcc,
     contrast: (
         50 : #000000,
         100 : #000000,
@@ -34,6 +34,7 @@ $md-primary: (
         A700 : #000000,
     )
 );
+
 
 
 
