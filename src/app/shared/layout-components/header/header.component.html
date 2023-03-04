@@ -4,7 +4,7 @@
     <!-- Left -->
     <div class="main-header-left">
       <div data-bs-toggle="sidebar">
-        <a routerLink="/pops" class="d-flex align-items-end">
+        <a routerLink="/promises" class="d-flex align-items-end">
           <div class="logo-container">
             <img src="../../../../assets/img/brand/pop-logo.png" alt="PoP Logo">
           </div>
@@ -16,10 +16,10 @@
     <!-- NOTE(nocs): margin-right is there to offset button padding so that they appear centered -->
     <div class="main-header-center justify-content-center" style="margin-right:16px;">
       <ul class="nav nav-item header-icons flex-nowrap">
-        <li ngbDropdown class="nav-item" [ngClass]="{'text-muted': !currentRoute.includes('/pops')}">
-          <button mat-button routerLink="/pops">Pops</button>
+        <li ngbDropdown class="nav-item" [ngClass]="{'text-muted': !currentRoute.includes('/promises')}">
+          <button mat-button routerLink="/promises">Promises</button>
         </li>
-        <li ngbDropdown class="nav-item text-muted" [ngClass]="{'text-muted': currentRoute !== '/create'}">
+        <li ngbDropdown class="nav-item text-muted" [ngClass]="{'text-muted': !currentRoute.includes('/create')}">
           <button mat-button routerLink="/create" [routerLink]="'/create'">Create</button>
         </li>
         <li ngbDropdown class="nav-item text-muted" [ngClass]="{'text-muted': !currentRoute.includes('/sign')}">
@@ -38,8 +38,8 @@
           [(ngbCollapse)]="isCollapsed" style="padding-bottom: 5px;">
           <ul class="nav nav-item header-icons navbar-nav-right ms-md-auto ms-3">
             <ng-container *ngIf="!isCollapsed">
-              <li ngbDropdown class="nav-item" [ngClass]="{'text-muted': !currentRoute.includes('/pops')}">
-                <button mat-button routerLink="/pops">Pops</button>
+              <li ngbDropdown class="nav-item" [ngClass]="{'text-muted': !currentRoute.includes('/promises')}">
+                <button mat-button routerLink="/promises">Promises</button>
               </li>
               <li ngbDropdown class="nav-item text-muted" [ngClass]="{'text-muted': currentRoute !== '/create'}">
                 <button mat-button routerLink="/create" [routerLink]="'/create'">Create</button>
