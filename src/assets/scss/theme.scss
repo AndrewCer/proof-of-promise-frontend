@@ -1,0 +1,45 @@
+@import "~@angular/material/theming";
+@include mat-core();
+
+/* For use in src/lib/core/theming/_palette.scss */
+$md-primary: (
+    50 : #f8feeb,
+    100 : #edfdce,
+    200 : #e2fcad,
+    300 : #d6fa8c,
+    400 : #cdf973,
+    500 : #c4f85a,
+    600 : #bef752,
+    700 : #b6f648,
+    800 : #aff53f,
+    900 : #a2f32e,
+    A100 : #ffffff,
+    A200 : #ffffff,
+    A400 : #eaffce,
+    A700 : #dfffb4,
+    contrast: (
+        50 : #000000,
+        100 : #000000,
+        200 : #000000,
+        300 : #000000,
+        400 : #000000,
+        500 : #000000,
+        600 : #000000,
+        700 : #000000,
+        800 : #000000,
+        900 : #000000,
+        A100 : #000000,
+        A200 : #000000,
+        A400 : #000000,
+        A700 : #000000,
+    )
+);
+
+
+
+$primary: mat-palette($md-primary, 500);
+$accent: mat-palette($mat-orange, 500);
+
+$theme: mat-light-theme($primary, $accent);
+
+@include angular-material-theme($theme);
