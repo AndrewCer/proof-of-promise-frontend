@@ -1,0 +1,81 @@
+<!-- main-header -->
+<div class="main-header side-header sticky nav nav-item">
+  <div class=" main-container container-fluid">
+    <!-- Left -->
+    <div class="main-header-left">
+      <div data-bs-toggle="sidebar">
+        <a routerLink="/pops" class="d-flex align-items-end">
+          <div class="logo-container">
+            <img src="../../../../assets/img/brand/pop-logo.png" alt="PoP Logo">
+          </div>
+          <h1 class="mb-0 logo-text">PoP</h1>
+        </a>
+      </div>
+    </div>
+    <!-- Center -->
+    <!-- NOTE(nocs): margin-right is there to offset button padding so that they appear centered -->
+    <div class="main-header-center justify-content-center" style="margin-right:16px;">
+      <ul class="nav nav-item header-icons flex-nowrap">
+        <li ngbDropdown class="nav-item" [ngClass]="{'text-muted': !currentRoute.includes('/pops')}">
+          <button mat-button routerLink="/pops">Pops</button>
+        </li>
+        <li ngbDropdown class="nav-item text-muted" [ngClass]="{'text-muted': currentRoute !== '/create'}">
+          <button mat-button routerLink="/create" [routerLink]="'/create'">Create</button>
+        </li>
+        <li ngbDropdown class="nav-item text-muted" [ngClass]="{'text-muted': !currentRoute.includes('/sign')}">
+          <button mat-button routerLink="/sign">Sign</button>
+        </li>
+      </ul>
+    </div>
+    <!-- Right -->
+    <div class="main-header-right">
+      <button class="navbar-toggler navresponsive-toggler d-md-none ms-auto" type="button" (click)="collapse.toggle()"
+        [attr.aria-expanded]="!isCollapsed">
+        <mat-icon class="navbar-toggler-icon">more_vert</mat-icon>
+      </button>
+      <div class="mb-0 navbar navbar-expand-lg navbar-nav-right responsive-navbar navbar-dark p-0">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent-4" #collapse="ngbCollapse"
+          [(ngbCollapse)]="isCollapsed" style="padding-bottom: 5px;">
+          <ul class="nav nav-item header-icons navbar-nav-right ms-md-auto ms-3">
+            <ng-container *ngIf="!isCollapsed">
+              <li ngbDropdown class="nav-item" [ngClass]="{'text-muted': !currentRoute.includes('/pops')}">
+                <button mat-button routerLink="/pops">Pops</button>
+              </li>
+              <li ngbDropdown class="nav-item text-muted" [ngClass]="{'text-muted': currentRoute !== '/create'}">
+                <button mat-button routerLink="/create" [routerLink]="'/create'">Create</button>
+              </li>
+              <li ngbDropdown class="nav-item text-muted" [ngClass]="{'text-muted': !currentRoute.includes('/sign')}">
+                <button mat-button routerLink="/sign">Sign</button>
+              </li>
+            </ng-container>
+            <li>
+              <button mat-button [matMenuTriggerFor]="menu" *ngIf="walletAddress" style="height: 100%;">
+                {{stringFormatterService.truncateAddress(walletAddress)}}
+                <mat-icon>expand_more</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="disconnectClicked()">
+                  <mat-icon color="warn">logout</mat-icon>
+                  Disconnect
+                </button>
+              </mat-menu>
+
+              <button mat-flat-button color="primary" (click)="connectClicked()" *ngIf="!walletAddress"
+                [disabled]="walletService.connectionLoading" style="height: 100%;">
+                <ng-container *ngIf="!walletService.connectionLoading">
+                  <mat-icon fontSet="material-icons-outlined">account_balance_wallet</mat-icon>
+                  Connect
+                </ng-container>
+                <ng-container *ngIf="walletService.connectionLoading">
+                  Connecting
+                  <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                </ng-container>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- /main-header -->
