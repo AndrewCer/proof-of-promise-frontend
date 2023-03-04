@@ -1,0 +1,19 @@
+
+<!-- Upload Area -->
+<input type="file" class="file-input" (change)="onFileSelected($event);" #fileUpload>
+
+<div id="uploadArea" class="upload-area mb-3" (click)="fileUpload.click();" (dragover)="$event.preventDefault();"
+    (drop)="onDropSuccess($event)">
+
+    <!-- Drop Zoon -->
+    <div class="upload-area__drop-zone drop-zone">
+        <span class="drop-zone__icon">
+            <i class='bx bxs-image'></i>
+        </span>
+        <p class="drop-zone__paragraph">Drop file here or click to browse</p>
+        <span id="loadingText" class="drop-zone__loading-text">Please Wait</span>
+    </div>
+    <!-- End Drop Zoon -->
+
+</div>
+<!-- End Upload Area -->

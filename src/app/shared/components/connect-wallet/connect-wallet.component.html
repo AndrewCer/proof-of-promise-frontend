@@ -1,0 +1,27 @@
+<div class="w-100 h-100 d-flex justify-content-center align-items-center" *ngIf="walletService.connectionLoading">
+    <img src="assets/img/loader.svg" alt="loader">
+</div>
+
+<div class="container col-sm-12 col-md-8 col-lg-6" *ngIf="!walletService.connectionLoading" style="margin-top: 20px;">
+    <div class="row gap-4 justify-content-center">
+        <div class="d-flex gap4 flex-column gap-4 col-12"
+            *ngIf="!passedInAddress && (walletStatus !== 0 && walletStatus !== 3)">
+            <div>
+                <h5>Connect to see your Promises</h5>
+                <button mat-flat-button color="primary" type="submit"
+                    class="btn ripple btn-primary btn-block mt-4 d-flex align-items-center justify-content-center gap-1"
+                    (click)="connectClicked()" [disabled]="walletService.connectionLoading">
+                    <ng-container *ngIf="!walletService.connectionLoading">
+                        Connect
+                        <mat-icon>account_balance_wallet</mat-icon>
+                    </ng-container>
+                    <ng-container *ngIf="walletService.connectionLoading">
+                        Connecting
+                        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    </ng-container>
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>

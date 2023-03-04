@@ -1,4 +1,4 @@
 <connect-wallet *ngIf="currentRoute === '/' || currentRoute === '/promises'" [walletStatus]="this.walletStatus"
-    (onConnectClicked)="connectClicked()" (onIsAddress)="isAddress($event)"></connect-wallet>
+    (onConnectClicked)="connectClicked()"></connect-wallet>
 
 <router-outlet></router-outlet>
