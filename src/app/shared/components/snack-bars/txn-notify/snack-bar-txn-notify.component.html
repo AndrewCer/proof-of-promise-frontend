@@ -1,0 +1,9 @@
+<div class="d-flex align-items-center gap-3">
+    <mat-spinner [diameter]="35" *ngIf="data.state === 'loading'"></mat-spinner>
+    <mat-icon color="primary" style="transform: scale(1.5);" *ngIf="data.state === 'done'">done</mat-icon>
+    <span class="text">{{data.message}}</span>
+    <mat-icon class="pointer" style="transform: scale(0.6);" [matTooltip]="'View on Polygon'" (click)="openBlockExplorer()" *ngIf="data.txnHash">open_in_new</mat-icon>
+    <button mat-icon-button aria-label="Close snackbar message" (click)="close()" *ngIf="data.closeButtion">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>

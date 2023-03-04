@@ -5,7 +5,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { combineLatestWith, filter, Subject, take, takeUntil } from 'rxjs';
 import { ContractRequestService } from 'src/app/core/http/contract/contract-request.service';
-import { EventFunnelNotifyComponent } from 'src/app/shared/components/snack-bars/event-funnel/event-funnel-notify.component';
 import { SnackBarTxnNotifyComponent } from 'src/app/shared/components/snack-bars/txn-notify/snack-bar-txn-notify.component';
 import { ActionButton, ButtonAction, MaterialButtonType } from 'src/app/shared/components/token-detail/token-detail.component';
 import { Chain } from 'src/app/shared/models/chain.model';

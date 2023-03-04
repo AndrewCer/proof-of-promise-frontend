@@ -1,0 +1,25 @@
+.text {
+    color: #fff;
+}
+
+button {
+    position: absolute;
+    right: 15px;
+    top: 4px;
+}
+
+::ng-deep {
+    .mat-button-wrapper {
+        display: unset;
+    }
+
+    .cdk-overlay-container {
+        z-index: 9999;
+    }
+
+    .mat-snack-bar-container.claimed-snackbar {
+        background-color: #323232;
+        min-width: 344px;
+        color: #fff;
+    }
+}

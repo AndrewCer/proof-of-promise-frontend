@@ -45,7 +45,6 @@ import { LoaderComponent } from './layout-components/loader/loader.component';
 
 import { ShortDomainPipe } from './pipes/short-domain.pipe';
 import { TruncateAddressPipe } from './pipes/truncate-address.pipe';
-import { EventFunnelNotifyComponent } from './components/snack-bars/event-funnel/event-funnel-notify.component';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -63,7 +62,6 @@ const components: any[] = [
   TokenDetailComponent,
 
   ConnectWalletComponent,
-  EventFunnelNotifyComponent,
   SnackBarTxnNotifyComponent,
 ];
 
