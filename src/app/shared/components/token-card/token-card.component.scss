@@ -1,0 +1,119 @@
+.attribute-container {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1;
+
+    transition: opacity 0.4s ease-in-out 0s;
+    opacity: 0;
+}
+
+.always-show {
+    opacity: 1;
+    transition: opacity 0.4s ease-in-out 0s;
+}
+
+.card-container {
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.card-image {
+    transform: scale(1);
+    transition-duration: 0.4s;
+}
+
+.faded-row {
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    content: "";
+    position: relative;
+}
+.faded-row:before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: linear-gradient(transparent 10px, white);
+}
+
+.token-attribute {
+    background: rgba(159, 159, 159, 0.4);
+}
+
+.token-notification {
+    background-color: #fff;
+    padding: 5px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 13px;
+    z-index: 2;
+    width: 34px;
+    height: 34px;
+}
+
+.token-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
+    border-radius: 14px;
+    background: #ffffff;
+    width: 260px;
+    transition: 0.35s;
+    position: relative;
+
+    &:hover {
+        transition: all 0.1s ease 0s;
+    }
+
+    &.hover:hover {
+        cursor: pointer;
+    }
+
+    &:hover .attribute-container {
+        opacity: 1;
+    }
+
+    &.hover:hover .card-image {
+        transform: scale(1.12);
+        transition-duration: 0.4s;
+    }
+
+    .card-image {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 260px;
+        height: 260px;
+
+        img {
+            max-height: 260px;
+            max-width: 260px;
+            width: auto;
+            height: auto;
+        }
+    }
+
+    .card-data {
+        padding: 15px;
+
+        h4 {
+            font-size: 14px;
+        }
+
+        h3 {
+            font-size: 18px;
+            margin-bottom: 25px;
+        }
+
+        h6 {
+            font-size: 12px;
+            color: #a1a1a1;
+        }
+    }
+}

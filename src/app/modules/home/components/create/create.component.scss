@@ -1,0 +1,164 @@
+.pop-select-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.pop-select {
+    width: 50%;
+    position: relative;
+    height: 9rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    border: 2px dashed #4d587547;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: border-color 300ms ease-in-out;
+}
+
+hr {
+    height: 1px;
+}
+
+.card {
+    border-radius: 5px;
+    box-shadow: 0px 3px 4px rgb(0 0 0 / 40%);
+}
+
+.button-list-options {
+    display: grid;
+    gap: 10px;
+    width: 100%;
+    padding-bottom: 1rem;
+
+    .logo-wrapper {
+        padding-right: 1rem;
+        width: 46px;
+
+        .mat-icon {
+            width: 30px;
+            height: 30px;
+            font-size: 30px;
+            vertical-align: middle;
+        }
+    }
+
+    button {
+        max-height: 56px;
+        width: 100%;
+        font-weight: 500;
+        transition: 0.3s background-color;
+        background-color: #fff;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 1rem;
+        outline: none;
+        border: 1px solid #0000001a;
+
+        margin-left: 0;
+
+        img {
+            width: 30px;
+        }
+    }
+
+    button:hover {
+        background-color: #8080801c;
+    }
+}
+
+.card-body {
+    padding-top: 0;
+}
+
+.gap-1-rem {
+    gap: 1rem;
+}
+
+.token-wrapper {
+    max-width: 300px;
+}
+
+.custom-controls-stacked {
+    grid-gap: 12px;
+}
+
+.attribute-box {
+    width: 150px;
+    background-color: #61616b0d;
+    border-radius: 6px;
+    border: 1px solid #d4dadb;
+    padding: 10px;
+    text-align: center;
+
+    .attribute-name {
+        color: #919697;
+        font-size: 11px;
+        font-weight: 500;
+        text-transform: uppercase;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .attribute-value {
+        color: rgb(53, 56, 64);
+        font-size: 15px;
+        font-weight: 500;
+        line-height: 30px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .attribute-close {
+        position: absolute;
+        right: 0;
+        top: 0;
+
+        mat-icon {
+            transform: scale(0.8);
+        }
+    }
+}
+
+@media (max-width: 415px) {
+    .card {
+        padding: 0;
+    }
+}
+
+@media (max-width: 720px) {
+    .radio-container {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 700px) {
+    .container {
+        padding: 0;
+    }
+}
+
+@media (max-width: 936px) {
+    .token-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .media-hidden {
+        display: none;
+    }
+
+    .container {
+        height: unset;
+        max-height: unset;
+        flex-direction: column;
+    }
+
+    .gap-5-dynamic {
+        gap: 1rem;
+    }
+}
