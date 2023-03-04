@@ -41,7 +41,7 @@ export class CreateComponent implements OnDestroy {
     public attributes: TokenAttributes[] = [];
     public baseUrl = '';
     public chains = [
-        Chain.base,
+        // Chain.base,
         Chain.polygon,
     ];
     public dialogRef!: MatDialogRef<any>;
@@ -287,7 +287,7 @@ export class CreateComponent implements OnDestroy {
 
     private setupForm(): FormGroup {
         return this.formBuilder.group({
-            chain: [this.testnet ? Chain.base : Chain.polygon, Validators.compose([
+            chain: [this.testnet ? Chain.polygon : Chain.base, Validators.compose([
                 Validators.required
             ])],
             name: [null, Validators.compose([
