@@ -1,0 +1,18 @@
+<div class="position-relative">
+    <h1 mat-dialog-title>Connect with:</h1>
+    <div mat-dialog-actions>
+        <div class="wallet-options">
+            <button class="rounded" (click)="selected(option.label)" *ngFor="let option of options">
+                <div class="logo-wrapper">
+                    <img *ngIf="option.label !== 'Email'" [src]="option.img">
+                    <mat-icon *ngIf="option.label === 'Email'" style="transform: scale(1.25);color:#6851ff;">mail
+                    </mat-icon>
+                </div>
+                {{option.label}}
+            </button>
+        </div>
+    </div>
+    <button class="absolute-close" mat-icon-button mat-dialog-close aria-label="Close attributes modal">
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
