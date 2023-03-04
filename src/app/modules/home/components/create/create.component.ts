@@ -1,19 +1,18 @@
 import { ViewportScroller } from '@angular/common';
 import { Component, OnDestroy } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BurnAuth, SbtMetadata, Tenant, TokenAttributes, TokenData, UpdateRequest } from '@soulbind/sdk';
 import { ethers } from 'ethers';
-import { nanoid } from 'nanoid';
-import { combineLatestWith, Subject, take, takeUntil } from 'rxjs';
+import { Subject, take, takeUntil } from 'rxjs';
 import { ContractRequestService } from 'src/app/core/http/contract/contract-request.service';
 import { FileRequestService } from 'src/app/core/http/file/file-request.service';
 
 import { SnackBarTxnNotifyComponent } from 'src/app/shared/components/snack-bars/txn-notify/snack-bar-txn-notify.component';
 import { Chain } from 'src/app/shared/models/chain.model';
 import { PromiseCreation } from 'src/app/shared/models/promise-creation.model';
+import { PromiseData } from 'src/app/shared/models/promise.model';
 import { SnackBarState } from 'src/app/shared/models/snack-bar.model';
 import { WalletService } from 'src/app/shared/services/wallet.service';
 import Validation from 'src/app/shared/utils/validation.util';
@@ -38,7 +37,6 @@ enum PopOption {
     styleUrls: ['./create.component.scss'],
 })
 export class CreateComponent implements OnDestroy {
-    public attributes: TokenAttributes[] = [];
     public baseUrl = '';
     public chains = [
         // Chain.base,
@@ -52,7 +50,7 @@ export class CreateComponent implements OnDestroy {
     public signLink: string;
     public testnet = false;
 
-    public token: TokenData;
+    public token: PromiseData;
 
     public form: FormGroup;
     public submitting = false;
@@ -121,6 +119,7 @@ export class CreateComponent implements OnDestroy {
                 this.popOptionSelect = option;
 
                 this.form = this.setupForm();
+                this.fileFormData = new FormData();
                 if (option == PopOption.file) {
                     this.imgUrl = undefined;
                 }
@@ -149,32 +148,6 @@ export class CreateComponent implements OnDestroy {
         });
     }
 
-    public attributeAdd(name: string, v: string) {
-        if (!name || !v) {
-            return;
-        }
-
-        name = name.trim();
-        v = v.trim();
-        let value: string | number | boolean = v;
-
-        const attribute = {
-            trait_type: name,
-            value,
-        }
-
-        this.attributes.unshift(attribute);
-
-        this.formControl['attributeValue'].reset();
-        this.formControl['attributeName'].reset();
-
-        this.form.markAsDirty();
-    }
-
-    public attributeRemove(index: number) {
-        this.attributes.splice(index, 1);
-    }
-
     public async submit() {
         if (this.form.invalid) {
             return;
@@ -186,10 +159,30 @@ export class CreateComponent implements OnDestroy {
 
         this.submitting = true;
 
+        let walletAddresses: string[] = [];
+        if (this.formControl['signers'] && this.formControl['signers'].value) {
+            let signersStr = this.formControl['signers'].value;
+            // Remove trailing comma if one exists
+            signersStr = signersStr.replace(/,*$/, '');
+            // Remove all spaces
+            signersStr = signersStr.replace(/\s+/g, '');
+
+            // Remove duplicates
+            const signersArr = [...new Set(signersStr.split(','))] as string[];
+
+            walletAddresses = signersArr.filter((signer) => this.walletService.isAddress(signer as string));
+        }
+
         this.fileFormData.append('name', this.formControl['name'].value);
         this.fileFormData.append('description', this.formControl['description'].value || '');
         this.fileFormData.append('external_url', this.formControl['externalLink'].value || '');
-        this.fileFormData.append('attributes', JSON.stringify(this.attributes));
+
+        this.fileFormData.append('burnAuth', this.formControl['burnAuth'].value);
+        this.fileFormData.append('creator', this.walletService.connectedWallet);
+        // TODO(nocs): do price
+        // this.fileFormData.append('price', this.formControl['price'].value);
+        this.fileFormData.append('receivers', walletAddresses.join());
+
 
         this.fileRequestService.uploadImage(this.fileFormData).pipe(
             take(1)
@@ -205,22 +198,6 @@ export class CreateComponent implements OnDestroy {
             }
 
             const ipfsUri = apiResponse.success.uri;
-            // TODO(nocs): handle metaData. Store in db?
-            const metaData = apiResponse.success.metaData;
-
-            let walletAddresses: string[] = [];
-            if (this.formControl['signers'] && this.formControl['signers'].value) {
-                let signersStr = this.formControl['signers'].value;
-                // Remove trailing comma if one exists
-                signersStr = signersStr.replace(/,*$/, '');
-                // Remove all spaces
-                signersStr = signersStr.replace(/\s+/g, '');
-
-                // Remove duplicates
-                const signersArr = [...new Set(signersStr.split(','))] as string[];
-
-                walletAddresses = signersArr.filter((signer) => this.walletService.isAddress(signer as string));
-            }
 
             const promiseCreation: PromiseCreation = {
                 burnAuth: ethers.BigNumber.from(this.formControl['burnAuth'].value),
@@ -234,8 +211,7 @@ export class CreateComponent implements OnDestroy {
 
             console.log(txn);
 
-            this.token.txnHash = txn;
-
+            this.token.promiseHash = txn;
 
             this.trackPendingTransaction(txn.hash, promiseCreation.promiseHash);
         });
@@ -273,14 +249,16 @@ export class CreateComponent implements OnDestroy {
         this.token = {
             burnAuth: this.formControl['burnAuth'].value,
             created: Date.now(),
-            owner: this.walletService.connectedWallet || '',
-            txnHash: '',
-            metaData: {
+            creator: this.walletService.connectedWallet || '',
+            price: 0,
+            restricted: false,
+            tokenUri: '',
+            promiseHash: '',
+            metadata: {
                 name: this.formControl['name'].value || 'Name',
                 description: this.formControl['description'].value || 'Description',
                 external_url: this.formControl['externalLink'].value || 'External Url',
                 image: this.imgUrl || 'assets/img/placeholder.png',
-                attributes: this.attributes,
             }
         }
     }
@@ -305,16 +283,16 @@ export class CreateComponent implements OnDestroy {
         });
     }
 
-    public openBlockExplorer(txnHash: string | undefined) {
-        if (!txnHash) {
+    public openBlockExplorer(txn: any) {
+        if (!txn) {
             return;
         }
 
         if (this.formControl['chain'].value === Chain.base) {
-            window.open(`https://goerli.basescan.org/tx/${txnHash}`, '_blank')?.focus();
+            window.open(`https://goerli.basescan.org/tx/${txn.hash}`, '_blank')?.focus();
         }
         else {
-            window.open(`${environment.polygonScanUrl}/tx/${txnHash}`, '_blank')?.focus();
+            window.open(`${environment.polygonScanUrl}/tx/${txn.txn}`, '_blank')?.focus();
         }
     }
 
