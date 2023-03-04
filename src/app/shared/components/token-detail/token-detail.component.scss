@@ -1,0 +1,157 @@
+h1 {
+    width: fit-content;
+    font-weight: bold;
+    margin-bottom: 0;
+    margin-right: 20px;
+}
+
+.claimed-overlay {
+    position: absolute;
+    top: 0;
+    border-radius: 15px;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.68);
+
+    p {
+        transform: rotate(327deg);
+        cursor: default;
+    }
+}
+
+.detail-content {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+}
+
+.token-image-container {
+    img {
+        width: 100%;
+        border-radius: 20px;
+    }
+
+    h5 {
+        font-size: 22px;
+    }
+}
+
+.token-image {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+
+    img {
+        max-height: 100%;
+        max-width: 100%;
+        width: auto;
+        height: auto;
+        border-radius: 14px;
+    }
+}
+
+.token-details {
+    width: 450px;
+    h3 {
+        font-size: 24px;
+    }
+
+    .token-info {
+        font-size: 20px;
+
+        .data {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        img {
+            vertical-align: text-top;
+            height: 24px;
+            margin-right: 20px;
+        }
+    }
+}
+
+.token-description {
+    max-width: 500px;
+
+    .token-description-body {
+        white-space: pre-wrap;
+
+        overflow: scroll;
+        max-height: 220px;
+        min-height: 220px;
+
+        font-size: 20px;
+        color: #a1a1a1;
+    }
+}
+
+hr {
+    height: 1px;
+}
+
+.properties-container {
+    overflow: scroll;
+    max-height: 220px;
+}
+
+@media (max-width: 800px) {
+    .token-description {
+        max-width: unset;
+
+        .token-description-body {
+            min-height: unset;
+        }
+    }
+
+    .floating-button {
+        background-color: #fff;
+        position: fixed;
+        bottom: 0;
+        display: flex;
+        width: 100%;
+        left: 0;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        button {
+            margin-top: 10px;
+            margin-bottom: 10px;
+            width: 90%;
+        }
+    }
+
+    .token-image {
+        width: 60%;
+        height: unset;
+        min-height: 350px;
+    }
+
+    // .token-detail,
+    .token-image-container {
+        width: 100%;
+    }
+
+    .detail-content {
+        flex-direction: column;
+        gap: 10px;
+
+        .token-details {
+            padding: 0;
+            width: unset;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .token-image {
+        width: 100%;
+    }
+}

@@ -4,7 +4,6 @@ import { filter, Subject, takeUntil } from 'rxjs';
 import { WalletStatus } from '../../models/wallet.model';
 import { NavService } from '../../services/nav.service';
 import { StringFormatterService } from '../../services/string-formatter.service';
-import { SwitcherService } from '../../services/switcher.service';
 import { WalletService } from '../../services/wallet.service';
 
 
@@ -24,7 +23,6 @@ export class HeaderComponent implements OnDestroy {
 
   constructor(
     public stringFormatterService: StringFormatterService,
-    public SwitcherService: SwitcherService,
     public navServices: NavService,
     public walletService: WalletService,
     private router: Router,

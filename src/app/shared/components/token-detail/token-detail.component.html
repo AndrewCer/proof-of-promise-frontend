@@ -1,0 +1,110 @@
+<div class="detail-content justify-content-center">
+    <div class="token-image-container" [ngClass]="{'d-flex justify-content-center': smallView}">
+        <div class="token-image">
+            <div class="claimed-overlay" *ngIf="isClaimed || limitReached || isRestricted">
+                <p class="text-danger h4" *ngIf="isClaimed || limitReached">Claimed</p>
+                <p class="text-danger h4" *ngIf="isRestricted">Restricted</p>
+            </div>
+            <img [defaultImage]="'assets/img/placeholder.svg'" [lazyLoad]="token.metadata.image" />
+        </div>
+        <ng-container *ngIf="token.metadata.description && !smallView">
+            <div class="token-description mt-4">
+                <h5>Description</h5>
+                <h6 class="token-description-body">{{token.metadata.description}}</h6>
+            </div>
+        </ng-container>
+    </div>
+
+    <div class="token-details" [ngClass]="{'mt-4': smallView}">
+        <h1>{{token.metadata.name}}</h1>
+        <h3><span matTooltip="{{token.creator}}">{{token.creator | truncateAddress}}</span></h3>
+        <div class="mt-4">
+            <p class="token-info">
+                <img src="assets/img/svgicons/calendar-icon.svg">
+                {{token.created | date}}
+            </p>
+            <p class="token-info" *ngIf="token.metadata.external_url">
+                <a href="{{token.metadata.external_url}}" target="_blank" rel="noopener noreferrer">
+                    <img src="assets/img/svgicons/link.svg">
+                    {{token.metadata.external_url | shortDomain}}
+                </a>
+            </p>
+
+            <div class="attribute-container gap-3">
+                <div class="token-attribute" [matTooltip]="'Soulbound'">
+                    <svg width="16" height="19" viewBox="0 0 16 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M15.9197 11.7171C15.8971 14.1798 15.1102 16.223 13.5797 17.9831C13.2858 18.3214 12.865 18.3705 12.556 18.111C12.2395 17.8444 12.2239 17.4203 12.5291 17.067C13.8189 15.5734 14.4855 13.8373 14.4841 11.8676C14.4822 9.72676 13.7137 7.87932 12.2267 6.33712C11.7738 5.86724 11.3073 5.41104 10.843 4.95201C9.9646 4.08396 8.62479 4.07972 7.77655 4.93928C6.93351 5.79364 6.94672 7.11789 7.8091 7.98924C8.2403 8.42516 8.67621 8.85682 9.10929 9.29085C10.1977 10.383 10.4868 11.9827 9.84525 13.3598C9.20648 14.7313 7.78646 15.546 6.25228 15.4045C5.54746 15.3394 4.87708 15.1157 4.36804 14.6227C3.50565 13.7873 2.61684 12.9602 1.87806 12.021C0.453324 10.2089 -0.128835 8.10058 0.0249608 5.79695C0.16366 3.71882 0.950094 1.90629 2.29227 0.326345C2.60788 -0.0449348 3.04191 -0.101547 3.36884 0.182456C3.68492 0.457024 3.69153 0.887747 3.37828 1.24818C2.08894 2.73188 1.42563 4.4609 1.42422 6.42062C1.42233 8.55961 2.18282 10.4108 3.66794 11.9554C4.12555 12.4314 4.59732 12.8937 5.0672 13.3584C5.94421 14.226 7.28261 14.2288 8.13462 13.3683C8.98003 12.514 8.97201 11.1864 8.11339 10.3169C7.67135 9.86923 7.22176 9.42955 6.77924 8.98278C5.37762 7.56796 5.37573 5.31008 6.77263 3.9113C8.16812 2.5144 10.4373 2.51062 11.8427 3.91601C12.5206 4.59394 13.2226 5.25536 13.834 5.99037C15.2371 7.67788 15.8881 9.65552 15.9197 11.7171Z"
+                            fill="white" />
+                        <path
+                            d="M4.28431 6.38819C4.30507 7.80632 4.77872 8.98762 5.73405 9.96795C6.1676 10.4128 6.61201 10.8464 7.04933 11.2875C7.3791 11.6201 7.39986 12.0635 7.10264 12.356C6.81203 12.6419 6.37188 12.6235 6.05155 12.3022C5.5076 11.7569 4.92874 11.2398 4.43528 10.652C2.82608 8.73475 2.41423 6.54717 3.2752 4.21146C4.12721 1.90075 5.84397 0.500545 8.283 0.0967133C10.4418 -0.260886 12.3194 0.385906 13.8904 1.90877C14.3193 2.32439 14.7382 2.75087 15.159 3.17499C15.4935 3.51183 15.5142 3.9685 15.2133 4.26382C14.9113 4.55962 14.4806 4.53792 14.1428 4.20391C13.7126 3.77791 13.2946 3.33963 12.8572 2.92118C11.3726 1.50163 9.62282 1.05629 7.68575 1.71582C5.76754 2.36874 4.6622 3.78026 4.33054 5.78338C4.29611 5.99898 4.29705 6.22118 4.28431 6.38819Z"
+                            fill="white" />
+                        <path
+                            d="M11.6225 11.8927C11.5956 10.4628 11.1125 9.28574 10.1524 8.30965C9.7222 7.87233 9.2844 7.44302 8.85226 7.00805C8.51967 6.67309 8.50032 6.23813 8.79989 5.9395C9.09852 5.64181 9.54245 5.65597 9.86703 5.99517C10.5299 6.68678 11.2639 7.32885 11.8258 8.09547C14.5937 11.872 12.432 17.2935 7.82947 18.1526C5.60462 18.5677 3.6633 17.9568 2.03288 16.3835C1.58612 15.9523 1.15162 15.5074 0.714294 15.0668C0.500113 14.8512 0.442557 14.5922 0.541628 14.3072C0.635981 14.0374 0.83884 13.8873 1.11907 13.8501C1.37194 13.8166 1.57668 13.9175 1.75218 14.0954C2.18385 14.5313 2.60844 14.9743 3.05331 15.3965C4.54221 16.8085 6.29151 17.2543 8.22906 16.5901C10.1581 15.9282 11.2583 14.5049 11.58 12.49C11.6149 12.2725 11.6121 12.0503 11.6225 11.8927Z"
+                            fill="white" />
+                    </svg>
+                </div>
+                <div class="token-attribute" [matTooltip]="'Burnable'"
+                    *ngIf="token.burnAuth === 0 || token.burnAuth === 1 || token.burnAuth === 2">
+                    <mat-icon>local_fire_department</mat-icon>
+                </div>
+                <!-- TODO(nocs): get this link working -->
+                <!-- <div class="token-attribute pointer" [matTooltip]="'View on Polygon'" (click)="openBlockExplorer()" *ngIf="token.contract !== baseContractAddress">
+                    <svg width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M13.6292 4.84131C13.3003 4.65329 12.8773 4.65329 12.5013 4.84131L9.86945 6.3924L8.08355 7.37947L5.49869 8.93056C5.16971 9.11858 4.74674 9.11858 4.37076 8.93056L2.34987 7.70849C2.02089 7.52047 1.7859 7.14445 1.7859 6.72142V4.37128C1.7859 3.99525 1.97389 3.61923 2.34987 3.38421L4.37076 2.20914C4.69974 2.02113 5.12272 2.02113 5.49869 2.20914L7.51958 3.43122C7.84856 3.61923 8.08355 3.99525 8.08355 4.41828V5.96938L9.86945 4.93531V3.33721C9.86945 2.96119 9.68146 2.58516 9.30548 2.35015L5.54569 0.141009C5.21671 -0.047003 4.79373 -0.047003 4.41775 0.141009L0.563969 2.39715C0.18799 2.58516 0 2.96119 0 3.33721V7.75549C0 8.13151 0.18799 8.50754 0.563969 8.74255L4.37076 10.9517C4.69974 11.1397 5.12272 11.1397 5.49869 10.9517L8.08355 9.4476L9.86945 8.41353L12.4543 6.90944C12.7833 6.72142 13.2063 6.72142 13.5822 6.90944L15.6031 8.08451C15.9321 8.27252 16.1671 8.64855 16.1671 9.07157V11.4217C16.1671 11.7977 15.9791 12.1738 15.6031 12.4088L13.6292 13.5839C13.3003 13.7719 12.8773 13.7719 12.5013 13.5839L10.4804 12.4088C10.1514 12.2208 9.91645 11.8447 9.91645 11.4217V9.91763L8.13055 10.9517V12.5028C8.13055 12.8788 8.31854 13.2548 8.69452 13.4899L12.5013 15.699C12.8303 15.887 13.2533 15.887 13.6292 15.699L17.436 13.4899C17.765 13.3018 18 12.9258 18 12.5028V8.03751C18 7.66148 17.812 7.28546 17.436 7.05044L13.6292 4.84131Z"
+                            fill="white" />
+                    </svg>
+                </div>
+                <div class="token-attribute pointer" [matTooltip]="'View on Base'" (click)="openBlockExplorer()" *ngIf="token.contract === baseContractAddress">
+                    <svg width="32" height="32" viewBox="0 0 190 190" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 20px;">
+                        <path
+                            d="M94.2407 189.14C146.47 189.14 188.811 146.8 188.811 94.5701C188.811 42.3405 146.47 0 94.2407 0C44.6883 0 4.03726 38.1111 0 86.6207H125V102.519H6.78908e-07C4.03726 151.029 44.6883 189.14 94.2407 189.14Z"
+                            fill="white"></path>
+                    </svg>
+                </div> -->
+            </div>
+
+        </div>
+
+        <ng-container *ngIf="token.metadata.description && smallView">
+            <div class="token-description mt-4">
+                <h4>Description</h4>
+                <h6 class="token-description-body">{{token.metadata.description}}</h6>
+            </div>
+        </ng-container>
+
+        <!-- Dynamic action buttons -->
+        <ng-container *ngIf="buttons">
+            <hr />
+            <div class="d-flex flex-column gap-3">
+                <ng-container *ngFor="let button of buttons;let i = index;">
+                    <div
+                        [ngClass]="{'floating-button': (button.action === ButtonAction.claim || button.action === ButtonAction.connect)}">
+                        <p *ngIf="submitError && i === 0" class="tx-danger">{{submitError}}</p>
+                        <button [color]="button.color" type="submit" mat-flat-button [class]="button.class"
+                            [disabled]="button.disabled"
+                            *ngIf="button.materialType === MaterialButtonType.flat && !button.hidden"
+                            (click)="buttonClicked(button)">
+                            <img *ngIf="button.imgIconSrc" [src]="button.imgIconSrc">
+                            <mat-icon *ngIf="button.matIcon"
+                                fontSet="material-icons-outlined">{{button.matIcon}}</mat-icon>
+                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"
+                                *ngIf="button.loading"></span>
+                            {{button.text}}
+                        </button>
+                        <button [color]="button.color" type="submit" mat-stroked-button [class]="button.class"
+                            [color]="button.color" type="submit" mat-stroked-button [class]="button.class"
+                            [disabled]="button.disabled"
+                            *ngIf="button.materialType === MaterialButtonType.stroked && !button.hidden"
+                            (click)="buttonClicked(button)">
+                            <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"
+                                *ngIf="button.loading"></span>
+                            {{button.text}}
+                        </button>
+                    </div>
+                </ng-container>
+            </div>
+        </ng-container>
+    </div>
+</div>

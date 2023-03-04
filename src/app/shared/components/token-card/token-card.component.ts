@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { TokenData } from "@soulbind/sdk";
 import { ethers } from 'ethers';
-import { environment } from 'src/environments/environment';
+import { PromiseData } from '../../models/promise.model';
 
 @Component({
   selector: 'token-card',
@@ -13,7 +12,7 @@ export class TokenCardComponent {
   @Input() close: boolean;
   @Input() isBound: boolean;
   @Input() noHover: boolean;
-  @Input() token: TokenData;
+  @Input() token: PromiseData;
 
   @Output() closeClicked = new EventEmitter();
 

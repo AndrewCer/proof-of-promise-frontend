@@ -24,15 +24,14 @@
     </div>
     <div class="card-container">
         <div class="card-image">
-            <img [defaultImage]="'assets/img/placeholder.svg'" [lazyLoad]="token.metaData.image" />
-            <!-- <img [defaultImage]="'assets/img/brand/pop-logo.png'" [lazyLoad]="'assets/img/brand/pop-logo.png'" /> -->
+            <img [defaultImage]="'assets/img/placeholder.svg'" [lazyLoad]="token.metadata.image" />
         </div>
     </div>
     <div class="card-data">
-        <h4 *ngIf="token.owner"><span matTooltip="{{token.owner}}">{{token.owner | truncateAddress}}</span></h4>
-        <h4 *ngIf="!token.owner"><span matTooltip="Connect to see your address here.">{{zeroAddress | truncateAddress}}</span></h4>
+        <h4 *ngIf="token.creator"><span matTooltip="{{token.creator}}">{{token.creator | truncateAddress}}</span></h4>
+        <h4 *ngIf="!token.creator"><span matTooltip="Connect to see your address here.">{{zeroAddress | truncateAddress}}</span></h4>
         <div class="faded-row">
-            <h3>{{token.metaData.name}}</h3>
+            <h3>{{token.metadata.name}}</h3>
         </div>
         <h6>Issued on {{token.created | date}}</h6>
     </div>

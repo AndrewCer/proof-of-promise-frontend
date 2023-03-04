@@ -1,19 +1,12 @@
 import { Injectable } from '@angular/core';
 
 import { BigNumber, ethers } from "ethers";
-import { BehaviorSubject, lastValueFrom, take } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { WalletStatus } from '../models/wallet.model';
 
 import { jsonAbi } from '../utils/abi/0xdF41B10837760583eb632CD5C2d7723d0e2E54F5';
 
-// 0xdf41b10837760583eb632cd5c2d7723d0e2e54f5
-
 import WalletConnectProvider from "@walletconnect/web3-provider";
-import { environment } from 'src/environments/environment';
-import { ContractRequestService } from 'src/app/core/http/contract/contract-request.service';
-import { Magic } from 'magic-sdk';
-import { ConnectExtension } from '@magic-ext/connect';
-import { SignedMessage } from '../models/singed-message.model';
 import { PromiseCreation } from '../models/promise-creation.model';
 
 @Injectable({
@@ -50,11 +43,6 @@ export class WalletService {
             80001: 'https://polygon-mumbai.infura.io/v3/bad2b2c13590479e967f83b8d6747cb0',
             137: 'https://polygon-mainnet.infura.io/v3/bad2b2c13590479e967f83b8d6747cb0'
         }
-    });
-
-    private magic = new Magic(environment.magicPublicKey, {
-        extensions: [new ConnectExtension()],
-        network: environment.polygonNode
     });
 
     constructor() {
@@ -210,54 +198,6 @@ export class WalletService {
         return await this.signer.getAddress();
     }
 
-    public async getTokenURIs(address: string): Promise<string[]> {
-        const contractFunctions = this.contract.functions;
-        const sbtBalance = await contractFunctions['balanceOf'](address);
-
-        let tokenURIs: string[] = [];
-        for (let i = 0; i < sbtBalance; i++) {
-
-            const tokenId = (await contractFunctions['tokenOfOwnerByIndex'](address, i)).toString();
-
-            const tokenURI = (await contractFunctions['tokenURI'](tokenId))[0];
-            tokenURIs.push(tokenURI);
-        }
-
-        return tokenURIs;
-    }
-
-    public getSignatureMessage(): string | undefined {
-        if (!this.connectedWallet) {
-            return;
-        }
-
-        // TODO(nocs): get signature message
-        return ''
-    }
-
-    public async signMessage(message: string): Promise<string | undefined> {
-        if (!this.signer || !this.connectedWallet) {
-            return;
-        }
-
-        return await this.signer.signMessage(message);
-    }
-
-    public validateSignature(message: string, signature: string): boolean | undefined {
-        const signedAddress = ethers.utils.verifyMessage(message, signature);
-
-        if (!this.connectedWallet) {
-            return undefined;
-        }
-
-        if (signedAddress == this.connectedWallet) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
-
     public isAddress(address: string): boolean {
         return ethers.utils.isAddress(address);
     }
@@ -317,7 +257,30 @@ export class WalletService {
 
         const txn = await contractSigner.createPromise(promiseCreation, options);
 
-        return txn
+        return txn;
+    }
+
+    public async signPromise(promiseHash: string) {
+        const contractSigner = this.contractSigner();
+
+        const price = await this.gasPrice();
+
+        console.log(price);
+
+        const options = {
+            maxPriorityFeePerGas: price,
+            maxFeePerGas: price,
+            gasLimit: 500000,
+        }
+
+        const txn = await contractSigner.signPromise(promiseHash, options);
+
+        return txn;
+    }
+
+    public async getPromise(promiseHash: string) {
+        const contractFunctions = this.contract.functions;
+        return contractFunctions.promises(promiseHash);
     }
 }
 
