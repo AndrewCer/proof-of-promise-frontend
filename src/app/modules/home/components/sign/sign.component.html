@@ -1,0 +1,16 @@
+<div class="w-100 h-100 d-flex justify-content-center align-items-center" *ngIf="pageLoading">
+    <img src="assets/img/loader.svg" alt="loader">
+</div>
+
+<div class="container empty-view-container d-flex flex-column align-items-center"
+    *ngIf="noTokens && !tokens.length && !pageLoading">
+    <p>No PoP to sign yet.</p>
+    <img src="assets/img/hot-air-balloons.svg" alt="Nothing here">
+</div>
+
+<div class="container" style="margin-top: 20px;">
+    <ng-container *ngIf="token && !pageLoading">
+        <token-detail [token]="token" [buttons]="claimSuccess ? [] : actionButtons"
+            (onButtonClick)="buttonClicked($event)"></token-detail>
+    </ng-container>
+</div>
