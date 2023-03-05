@@ -19,6 +19,11 @@ export class ContractRequestService {
         return this.apiService.request(RequestMethod.get, path)
     }
 
+    public getPromises(address: string): Observable<ApiResponse<PromiseData[]>> {
+        const path = `${this.versionPath}/promises/${address}`;
+        return this.apiService.request(RequestMethod.get, path)
+    }
+
     public updatePromise(promiseHash: string, address: string): Observable<ApiResponse<PromiseData>> {
         const path = `${this.versionPath}/promise/${promiseHash}`;
         return this.apiService.request(RequestMethod.patch, path, { address })

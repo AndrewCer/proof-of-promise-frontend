@@ -1,0 +1,25 @@
+body:not(.horizontal) .main-content {
+    margin-top: 14px;
+}
+
+.empty-view-container {
+    width: 50%;
+    color: #e5e5e5;
+    font-size: 25px;
+}
+
+.container {
+    margin-bottom: 50px;
+}
+
+@media (max-width: 611px) {
+    .gap-5-dynamic {
+        gap: 1rem;
+    }
+}
+@media (max-width: 620px) {
+    .empty-view-container {
+        padding: 0;
+        width: 80%;
+    }
+}

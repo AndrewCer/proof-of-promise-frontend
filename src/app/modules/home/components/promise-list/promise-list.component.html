@@ -1,0 +1,16 @@
+`<div class="w-100 h-100 d-flex justify-content-center align-items-center" *ngIf="dataLoading">
+    <img src="assets/img/loader.svg" alt="loader">
+</div>
+
+<div class="container empty-view-container d-flex flex-column align-items-center" *ngIf="!dataLoading && !promises.length && walletService.connectedWallet">
+    <p>No Promises signed yet.</p>
+    <img src="assets/img/hot-air-balloons.svg" alt="Nothing here">
+</div>
+
+<div class="container" *ngIf="!dataLoading">
+    <div class="w-100 d-flex gap-5-dynamic flex-wrap justify-content-center">
+        <div class="token-container d-flex" *ngFor="let promise of promises">
+            <token-card [token]="promise" [isBound]="true" (click)="tokenClicked(promise)"></token-card>
+        </div>
+    </div>
+</div>

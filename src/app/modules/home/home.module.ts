@@ -4,6 +4,7 @@ import { WalletSelectModalComponent } from 'src/app/shared/components/modals/wal
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CreateComponent } from './components/create/create.component';
 import { HomeComponent } from './components/home/home.component';
+import { PromiseListComponent } from './components/promise-list/promise-list.component';
 import { SignComponent } from './components/sign/sign.component';
 
 const routes: Routes = [
@@ -11,10 +12,10 @@ const routes: Routes = [
         path: '',
         component: HomeComponent,
         children: [
-            // {
-            //     path: 'promises',
-            //     component: PromiseListComponent,
-            // },
+            {
+                path: 'promises',
+                component: PromiseListComponent,
+            },
             {
                 path: 'create',
                 component: CreateComponent,
@@ -33,9 +34,10 @@ const routes: Routes = [
 
 @NgModule({
     declarations: [
-        SignComponent,
         CreateComponent,
         HomeComponent,
+        PromiseListComponent,
+        SignComponent,
         WalletSelectModalComponent,
     ],
     imports: [
