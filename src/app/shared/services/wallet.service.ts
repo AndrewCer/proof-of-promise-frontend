@@ -208,6 +208,8 @@ export class WalletService {
         const abiFile = await import(`../utils/abi/${this.activeContract}`) as any;
         this.iface = new ethers.utils.Interface(abiFile.jsonAbi || abiFile.jsonAbiMainNet);
         this.sbtAbi = this.iface.format(ethers.utils.FormatTypes['full']);
+
+        this.provider = new ethers.providers.Web3Provider(window.ethereum);
     }
 
     public async getAddress(): Promise<string> {

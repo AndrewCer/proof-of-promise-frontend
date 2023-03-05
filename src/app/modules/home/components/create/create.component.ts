@@ -6,7 +6,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ethers } from 'ethers';
 import { Subject, take, takeUntil } from 'rxjs';
-import { ContractRequestService } from 'src/app/core/http/contract/contract-request.service';
 import { FileRequestService } from 'src/app/core/http/file/file-request.service';
 
 import { SnackBarTxnNotifyComponent } from 'src/app/shared/components/snack-bars/txn-notify/snack-bar-txn-notify.component';
@@ -216,6 +215,9 @@ export class CreateComponent implements OnDestroy {
                 }],
             });
         }
+
+        console.log('here?');
+        
         
         // Set proper contract address
         await this.walletService.setContract(this.formControl['chain'].value);
