@@ -29,8 +29,6 @@ h1 {
 }
 
 .token-image-container {
-    min-width: 256px;
-    display: flex;
     justify-content: center;
 
     img {
@@ -44,6 +42,7 @@ h1 {
 }
 
 .token-image {
+    min-width: 256px;
     position: relative;
     display: flex;
     align-items: center;
