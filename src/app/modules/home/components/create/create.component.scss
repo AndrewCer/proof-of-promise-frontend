@@ -130,6 +130,12 @@ hr {
     }
 }
 
+@media (max-width: 625px) {
+    .sbt-container {
+        flex-direction: column;
+    }
+}
+
 @media (max-width: 720px) {
     .radio-container {
         flex-direction: column;

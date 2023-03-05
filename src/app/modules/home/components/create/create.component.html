@@ -60,14 +60,21 @@
         <div class="token-container">
             <token-card [token]="token" [noHover]="true"
                 [close]="(imgUrl && !submitting && popOptionSelect == popOption.file) ? true : false"
-                (closeClicked)="imgUrl = undefined; setPromiseData(); form.markAsDirty();"
+                (closeClicked)="imgUrl = undefined; setPromiseData(true); form.markAsDirty();"
                 [alwaysShowAttributes]="imgUrl ? true :false" [isBound]="true"></token-card>
         </div>
 
         <div *ngIf="signLink" style="width: 100%;">
             <h1>PoP Created!</h1>
             <hr />
-            <p>Promise signer link: <b><a href="{{signLink}}" target="_blank" rel="noopener noreferrer">{{signLink}}</a></b></p>
+            <p style="word-break: break-all;">Promise signer link: <b><a href="{{signLink}}" target="_blank"
+                        rel="noopener noreferrer">{{signLink}}</a></b></p>
+            <button color="primary" type="submit" mat-flat-button [cdkCopyToClipboard]="signLink"
+                class="btn ripple btn-primary btn-block d-flex align-items-center justify-content-center gap-1"
+                (click)="linkCopied()">
+                <mat-icon>{{copyLinkIcon}}</mat-icon>
+                {{copyLinkText}}
+            </button>
         </div>
 
         <!-- Form -->
@@ -110,7 +117,8 @@
                                     <div class="col-lg-12 form-group" *ngIf="popOptionSelect == popOption.link">
                                         <label class="form-label">Link: <span class="tx-danger">*</span>
                                             <input class="form-control" formControlName="externalLink"
-                                                placeholder="External link to site/document" [attr.disabled]="submitting ? true : null"
+                                                placeholder="External link to site/document"
+                                                [attr.disabled]="submitting ? true : null"
                                                 [ngClass]="{'has-success': formControl['externalLink'].valid}">
                                         </label>
                                     </div>

@@ -42,6 +42,8 @@ export class CreateComponent implements OnDestroy {
         // Chain.base,
         Chain.polygon,
     ];
+    public copyLinkText = 'Copy';
+    public copyLinkIcon = 'content_copy';
     public dialogRef!: MatDialogRef<any>;
     public fileFormData = new FormData();
     public imgUrl: string | undefined = 'assets/img/brand/pop-logo.png';
@@ -60,7 +62,6 @@ export class CreateComponent implements OnDestroy {
 
     // Edit props
     public isEdit = false;
-    private tokenId: string;
 
     private subscriptionKiller = new Subject();
 
@@ -97,8 +98,6 @@ export class CreateComponent implements OnDestroy {
 
         this.viewScroller.scrollToPosition([0, 0]);
 
-        this.init();
-
         this.listenToQueryParams();
     }
 
@@ -109,16 +108,22 @@ export class CreateComponent implements OnDestroy {
         this.fileFormData = new FormData();
     }
 
+    public linkCopied() {
+        this.copyLinkIcon = 'done';
+        this.copyLinkText = 'Copied';
+    }
+
     private listenToQueryParams() {
         this.activatedRoute.queryParams.pipe(
             takeUntil(this.subscriptionKiller),
         ).subscribe(params => {
             const option = params['option'];
 
+            this.init();
+
             if (option) {
                 this.popOptionSelect = option;
 
-                this.form = this.setupForm();
                 this.fileFormData = new FormData();
                 if (option == PopOption.file) {
                     this.imgUrl = undefined;
@@ -228,7 +233,6 @@ export class CreateComponent implements OnDestroy {
 
         if (inputElement && inputElement.files) {
             const file = inputElement.files[0];
-            console.log(file);
 
             if (!this.formControl['name'].value) {
                 this.formControl['name'].setValue(file.name);
@@ -245,7 +249,11 @@ export class CreateComponent implements OnDestroy {
         }
     }
 
-    public setPromiseData() {
+    public setPromiseData(forceReset?: boolean) {
+        if (forceReset) {
+            this.formControl['name'].reset();
+        }
+
         this.token = {
             burnAuth: this.formControl['burnAuth'].value,
             created: Date.now(),
