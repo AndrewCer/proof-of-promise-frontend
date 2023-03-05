@@ -3,6 +3,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ethers } from 'ethers';
 import { combineLatestWith, filter, Subject, take, takeUntil } from 'rxjs';
 import { ContractRequestService } from 'src/app/core/http/contract/contract-request.service';
 import { SnackBarTxnNotifyComponent } from 'src/app/shared/components/snack-bars/txn-notify/snack-bar-txn-notify.component';
@@ -13,6 +14,7 @@ import { SnackBarState } from 'src/app/shared/models/snack-bar.model';
 import { WalletStatus } from 'src/app/shared/models/wallet.model';
 import { StringFormatterService } from 'src/app/shared/services/string-formatter.service';
 import { WalletService } from 'src/app/shared/services/wallet.service';
+import { environment } from 'src/environments/environment';
 
 const confetti = require('canvas-confetti');
 
@@ -194,6 +196,47 @@ export class SignComponent implements OnDestroy {
             return;
         }
 
+        if (this.token.chain == Chain.base) {
+            const baseHex = ethers.utils.hexValue(ethers.BigNumber.from(environment.baseNode.chainId).toHexString());
+            await window.ethereum.request({
+                method: 'wallet_addEthereumChain',
+                params: [{
+                    chainId: baseHex,
+                    rpcUrls: [environment.baseNode.rpcUrl],
+                    chainName: environment.baseNode.chainName,
+                    nativeCurrency: environment.baseNode.nativeCurrency,
+                    blockExplorerUrls: [environment.baseNode.blockExplorerUrl],
+                    iconUrls: ['https://base.org/favicon.svg'],
+                }],
+            });
+        }
+        else {
+            const polygonHex = ethers.utils.hexValue(ethers.BigNumber.from(environment.polygonNode.chainId).toHexString());
+            await window.ethereum.request({
+                method: 'wallet_addEthereumChain',
+                params: [{
+                    chainId: polygonHex,
+                    rpcUrls: [environment.polygonNode.rpcUrl],
+                    chainName: environment.polygonNode.chainName,
+                    nativeCurrency: environment.polygonNode.nativeCurrency,
+                    blockExplorerUrls: [environment.polygonNode.blockExplorerUrl],
+                    iconUrls: [environment.polygonNode.iconUrl],
+                }],
+            });
+        }
+        
+        // Set proper contract address
+        await this.walletService.setContract(this.token.chain);
+        const { chainId } = await this.walletService.getNetwork();
+        if (this.token.chain == Chain.base && chainId !== environment.baseNode.chainId) {
+            this.resetButtonLoadState();
+            return;
+        }
+        else if (this.token.chain == Chain.polygon && chainId !== environment.polygonNode.chainId) {
+            this.resetButtonLoadState();
+            return;
+        }
+
 
         const txn = await this.walletService.signPromise(this.token.promiseHash);
 
@@ -252,10 +295,10 @@ export class SignComponent implements OnDestroy {
             take(1)
         ).subscribe(() => { });
 
-        this.fireConfetti();
         this.claimSuccess = true;
-
+        
         this.openCompleteSnackBar(txnHash);
+        this.fireConfetti();
     }
 
     private resetButtonLoadState() {
@@ -282,23 +325,26 @@ export class SignComponent implements OnDestroy {
     }
 
     private async fireConfetti() {
-        this.confetti({
-            particleCount: 100,
-            spread: 70,
-            origin: { x: 1 }
-        });
-
-        await confetti;
-        var confettiCanvase = document.createElement('confetti-canvas');
-        document.body.appendChild(confettiCanvase);
-        var covfefe = confetti.create(confettiCanvase, {
-            resize: true,
-            useWorker: true
-        });
-        covfefe({
-            particleCount: 100,
-            spread: 160
-        });
+        // TODO(nocs): Confetti acting up. Fix later
+        try {
+            this.confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { x: 1 }
+            });
+    
+            await confetti;
+            var confettiCanvase = document.createElement('confetti-canvas');
+            document.body.appendChild(confettiCanvase);
+            var covfefe = confetti.create(confettiCanvase, {
+                resize: true,
+                useWorker: true
+            });
+            covfefe({
+                particleCount: 100,
+                spread: 160
+            });
+        } catch (error) {}
     }
 }
 

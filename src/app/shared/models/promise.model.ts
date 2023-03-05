@@ -1,3 +1,4 @@
+import { Chain } from "./chain.model";
 import { BurnAuth } from "./types.model";
 
 interface TokenAttributes {
@@ -15,6 +16,7 @@ export interface Metadata {
 
 export interface PromiseData {
     burnAuth: BurnAuth;
+    chain: Chain;
     created: number;
     creator: string;
     price: number;

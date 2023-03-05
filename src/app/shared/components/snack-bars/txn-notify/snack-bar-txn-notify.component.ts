@@ -23,7 +23,7 @@ export class SnackBarTxnNotifyComponent {
   }
 
   public openBlockExplorer() {
-    if (this.data.contract === this.baseContractAddress || this.data.chain === Chain.base) {
+    if (this.data.chain == Chain.base) {
       window.open(`${environment.baseScanUrl}/tx/${this.data.txnHash}`, '_blank')?.focus();
     }
     else {

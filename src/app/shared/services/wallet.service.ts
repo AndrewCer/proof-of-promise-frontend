@@ -4,15 +4,15 @@ import { BigNumber, ethers } from "ethers";
 import { BehaviorSubject } from 'rxjs';
 import { WalletStatus } from '../models/wallet.model';
 
-import { jsonAbi } from '../utils/abi/0xdF41B10837760583eb632CD5C2d7723d0e2E54F5';
+import { jsonAbi } from '../utils/abi/0x109f58Cb16Bc0A255458B6cB54489e5C5A3E39aD';
 
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { PromiseCreation } from '../models/promise-creation.model';
 import { Chain } from '../models/chain.model';
 
 const chainContractAddress = {
-    base: '',
-    polygon: '0xdF41B10837760583eb632CD5C2d7723d0e2E54F5',
+    base: '0xB3C887ee0ad0AdDAd4fA3ECa3DC9af7595264bA3',
+    polygon: '0x109f58Cb16Bc0A255458B6cB54489e5C5A3E39aD',
 }
 
 @Injectable({
@@ -24,6 +24,8 @@ export class WalletService {
 
     public connectionLoading = false;
     public connectedWallet: string | undefined;
+
+    public activeContract = chainContractAddress.polygon;
 
     public $walletConnectionChanges = new BehaviorSubject<WalletStatus | undefined>(undefined);
     private set walletConnectionChanges(value) {
@@ -59,7 +61,7 @@ export class WalletService {
     }
 
     get contract() {
-        return new ethers.Contract('0xdF41B10837760583eb632CD5C2d7723d0e2E54F5', this.sbtAbi, this.provider);
+        return new ethers.Contract(this.activeContract, this.sbtAbi, this.provider);
     }
 
     public contractSigner() {
@@ -196,9 +198,14 @@ export class WalletService {
         this.walletConnectionChanges = WalletStatus.disconnected;
     }
 
+    public async getNetwork() {
+        return this.provider.getNetwork();
+    }
+
     public async setContract(chain: Chain) {
-        const contractAddress = chainContractAddress[chain];
-        const abiFile = await import(`../utils/abi/${contractAddress}`) as any;
+        this.activeContract = chainContractAddress[chain];
+
+        const abiFile = await import(`../utils/abi/${this.activeContract}`) as any;
         this.iface = new ethers.utils.Interface(abiFile.jsonAbi || abiFile.jsonAbiMainNet);
         this.sbtAbi = this.iface.format(ethers.utils.FormatTypes['full']);
     }
@@ -260,8 +267,6 @@ export class WalletService {
 
         const price = await this.gasPrice();
 
-        console.log(price);
-
         const options = {
             maxPriorityFeePerGas: price,
             maxFeePerGas: price,
@@ -277,8 +282,6 @@ export class WalletService {
         const contractSigner = this.contractSigner();
 
         const price = await this.gasPrice();
-
-        console.log(price);
 
         const options = {
             maxPriorityFeePerGas: price,

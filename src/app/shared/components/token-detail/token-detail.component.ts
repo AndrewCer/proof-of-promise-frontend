@@ -1,6 +1,7 @@
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { Chain } from '../../models/chain.model';
 import { PromiseData } from '../../models/promise.model';
 import { StringFormatterService } from '../../services/string-formatter.service';
 
@@ -47,8 +48,11 @@ export class TokenDetailComponent implements OnDestroy {
 
     @Output() onButtonClick = new EventEmitter<ActionButton>();
 
-    public baseContractAddress = '0xfC60aFf54B10f4A055044caf8760D47Ce8D218A1';
     public smallView = false;
+
+    public get Chain() {
+        return Chain;
+    }
 
     private subscriptionKiller = new Subject();
 
@@ -88,8 +92,12 @@ export class TokenDetailComponent implements OnDestroy {
     }
 
     public openBlockExplorer() {
-        // TODO(nocs): open block explorer for base/polygon
-        if (this.token) {
-        }
+        // TODO(nocs): store and get txn hash at an earlier time.
+        // if (this.token.chain == Chain.base) {
+        //     window.open(`${environment.baseScanUrl}/tx/${this.token.txnHash}`, '_blank')?.focus();
+        //   }
+        //   else {
+        //     window.open(`${environment.polygonScanUrl}/tx/${this.token.txnHash}`, '_blank')?.focus();
+        //   }
     }
 }

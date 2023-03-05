@@ -188,6 +188,46 @@ export class CreateComponent implements OnDestroy {
         // this.fileFormData.append('price', this.formControl['price'].value);
         this.fileFormData.append('receivers', walletAddresses.join());
 
+        if (this.formControl['chain'].value == Chain.base) {
+            const baseHex = ethers.utils.hexValue(ethers.BigNumber.from(environment.baseNode.chainId).toHexString());
+            await window.ethereum.request({
+                method: 'wallet_addEthereumChain',
+                params: [{
+                    chainId: baseHex,
+                    rpcUrls: [environment.baseNode.rpcUrl],
+                    chainName: environment.baseNode.chainName,
+                    nativeCurrency: environment.baseNode.nativeCurrency,
+                    blockExplorerUrls: [environment.baseNode.blockExplorerUrl],
+                    iconUrls: ['https://base.org/favicon.svg'],
+                }],
+            });
+        }
+        else {
+            const polygonHex = ethers.utils.hexValue(ethers.BigNumber.from(environment.polygonNode.chainId).toHexString());
+            await window.ethereum.request({
+                method: 'wallet_addEthereumChain',
+                params: [{
+                    chainId: polygonHex,
+                    rpcUrls: [environment.polygonNode.rpcUrl],
+                    chainName: environment.polygonNode.chainName,
+                    nativeCurrency: environment.polygonNode.nativeCurrency,
+                    blockExplorerUrls: [environment.polygonNode.blockExplorerUrl],
+                    iconUrls: [environment.polygonNode.iconUrl],
+                }],
+            });
+        }
+        
+        // Set proper contract address
+        await this.walletService.setContract(this.formControl['chain'].value);
+        const { chainId } = await this.walletService.getNetwork();
+        if (this.formControl['chain'].value == Chain.base && chainId !== environment.baseNode.chainId) {
+            this.submitting = false;
+            return;
+        }
+        else if (this.formControl['chain'].value == Chain.polygon && chainId !== environment.polygonNode.chainId) {
+            this.submitting = false;
+            return;
+        }
 
         this.fileRequestService.uploadImage(this.fileFormData).pipe(
             take(1)
@@ -210,9 +250,6 @@ export class CreateComponent implements OnDestroy {
                 receivers: walletAddresses,
                 tokenUri: ipfsUri,
             }
-
-            // Set proper contract address
-            await this.walletService.setContract(this.formControl['chain'].value);
 
             const txn = await this.walletService.createPromise(promiseCreation);
 
@@ -258,6 +295,7 @@ export class CreateComponent implements OnDestroy {
 
         this.token = {
             burnAuth: this.formControl['burnAuth'].value,
+            chain: this.formControl['chain'].value,
             created: Date.now(),
             creator: this.walletService.connectedWallet || '',
             price: 0,
