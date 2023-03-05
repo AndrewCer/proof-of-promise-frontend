@@ -1,9 +1,7 @@
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { PromiseData } from '../../models/promise.model';
-import { TokenData } from '../../models/types.model';
 import { StringFormatterService } from '../../services/string-formatter.service';
 
 export enum ButtonAction {
@@ -44,9 +42,7 @@ export class TokenDetailComponent implements OnDestroy {
     @Input() isMgmtPage: boolean;
     @Input() token: PromiseData;
 
-    @Input() isClaimed: boolean; // Used when a token has already been claimed by a wallet and the token is .limitOne=true.
     @Input() isRestricted: boolean; // Used when a user is not allowed to view a restricted token.
-    @Input() limitReached: boolean; // Used when a token no longer has anymore tokens to claim.
     @Input() submitError: string; // Pass in a string of text that will display in read above dynamic buttons.
 
     @Output() onButtonClick = new EventEmitter<ActionButton>();

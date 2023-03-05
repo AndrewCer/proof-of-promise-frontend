@@ -1,9 +1,8 @@
 <div class="detail-content justify-content-center">
     <div class="token-image-container" [ngClass]="{'d-flex justify-content-center': smallView}">
         <div class="token-image">
-            <div class="claimed-overlay" *ngIf="isClaimed || limitReached || isRestricted">
-                <p class="text-danger h4" *ngIf="isClaimed || limitReached">Claimed</p>
-                <p class="text-danger h4" *ngIf="isRestricted">Restricted</p>
+            <div class="claimed-overlay" *ngIf="isRestricted">
+                <p class="text-danger h4">Restricted</p>
             </div>
             <img [defaultImage]="'assets/img/placeholder.svg'" [lazyLoad]="token.metadata.image" />
         </div>
@@ -23,7 +22,7 @@
                 <img src="assets/img/svgicons/calendar-icon.svg">
                 {{token.created | date}}
             </p>
-            <p class="token-info" *ngIf="token.metadata.external_url">
+            <p class="token-info" *ngIf="token.metadata.external_url && !isRestricted">
                 <a href="{{token.metadata.external_url}}" target="_blank" rel="noopener noreferrer">
                     <img src="assets/img/svgicons/link.svg">
                     {{token.metadata.external_url | shortDomain}}
@@ -75,7 +74,7 @@
         </ng-container>
 
         <!-- Dynamic action buttons -->
-        <ng-container *ngIf="buttons">
+        <ng-container *ngIf="buttons && !isRestricted">
             <hr />
             <div class="d-flex flex-column gap-3">
                 <ng-container *ngFor="let button of buttons;let i = index;">

@@ -31,7 +31,7 @@ export class SignComponent implements OnDestroy {
     public currentRoute: string = '';
     public eventId: string | null = null;
     public isClaimed = false;
-    public invalidClaimAttempt = false;
+    public isRestricted = false;
     public pageLoading = true;
     public submitError: string;
     public tokens: PromiseData[] = [];
@@ -44,7 +44,6 @@ export class SignComponent implements OnDestroy {
         public stringFormatterService: StringFormatterService,
         public walletService: WalletService,
         private activatedRoute: ActivatedRoute,
-        private dialog: MatDialog,
         private contractRequestService: ContractRequestService,
         private router: Router,
         private snackBar: MatSnackBar,
@@ -142,8 +141,10 @@ export class SignComponent implements OnDestroy {
                 ).subscribe((apiResponse) => {
                     if (apiResponse.success) {
                         this.token = apiResponse.success;
-                        console.log(this.token);
 
+                        if (this.token.receivers && !this.token.receivers.includes(this.walletService.connectedWallet!)) {
+                            this.isRestricted = true;
+                        }
 
                         this.pageLoading = false;
                     }
@@ -233,14 +234,22 @@ export class SignComponent implements OnDestroy {
             }
         });
 
-        let txn = await this.walletService.getTransaction(txnHash);
-        if (!txn) {
-            await this.walletService.waitOneBlock();
+        try {
+            let txn = await this.walletService.getTransaction(txnHash);
+            if (!txn) {
+                await this.walletService.waitOneBlock();
 
-            txn = await this.walletService.getTransaction(txnHash);
+                txn = await this.walletService.getTransaction(txnHash);
+            }
+
+            await txn.wait();
+        } catch (error) {
+            console.log(error);
+            
+            this.submitError = 'Error while submitting transaction';
+            this.pageLoading = false;
+            return;
         }
-
-        await txn.wait();
 
         this.contractRequestService.updatePromise(this.token.promiseHash, this.walletService.connectedWallet!).pipe(
             take(1)
