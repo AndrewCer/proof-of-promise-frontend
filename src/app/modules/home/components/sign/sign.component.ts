@@ -16,8 +16,6 @@ import { StringFormatterService } from 'src/app/shared/services/string-formatter
 import { WalletService } from 'src/app/shared/services/wallet.service';
 import { environment } from 'src/environments/environment';
 
-const confetti = require('canvas-confetti');
-
 @Component({
     selector: 'sign',
     templateUrl: './sign.component.html',
@@ -51,6 +49,8 @@ export class SignComponent implements OnDestroy {
         private snackBar: MatSnackBar,
         private viewScroller: ViewportScroller,
     ) {
+
+        this.fireConfetti()
         this.actionButtons = [
             {
                 action: ButtonAction.claim,
@@ -325,26 +325,11 @@ export class SignComponent implements OnDestroy {
     }
 
     private async fireConfetti() {
-        // TODO(nocs): Confetti acting up. Fix later
-        try {
-            this.confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { x: 1 }
-            });
-    
-            await confetti;
-            var confettiCanvase = document.createElement('confetti-canvas');
-            document.body.appendChild(confettiCanvase);
-            var covfefe = confetti.create(confettiCanvase, {
-                resize: true,
-                useWorker: true
-            });
-            covfefe({
-                particleCount: 100,
-                spread: 160
-            });
-        } catch (error) {}
+        this.confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { x: 1 }
+        });
     }
 }
 
