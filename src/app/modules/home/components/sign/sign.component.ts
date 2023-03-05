@@ -49,8 +49,6 @@ export class SignComponent implements OnDestroy {
         private snackBar: MatSnackBar,
         private viewScroller: ViewportScroller,
     ) {
-
-        this.fireConfetti()
         this.actionButtons = [
             {
                 action: ButtonAction.claim,
