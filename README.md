@@ -2,6 +2,10 @@
 
 Front end repo for PoP.
 
+### Other repos:
+- [API](https://github.com/AndrewCer/proof-of-promise-api)
+- [Contracts](https://github.com/AndrewCer/proof-of-promise-contracts)
+
 ## PoP
 [Live Demo](https://proofofpromise.xyz)
 
