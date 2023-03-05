@@ -50,6 +50,7 @@ Alternatively, if the contents of the Promise being singed don’t require tight
 - Solidity
 - Ethers.js
 - Infura
+- WalletConnect
 - Base
 - Polygon
 - Node.js
