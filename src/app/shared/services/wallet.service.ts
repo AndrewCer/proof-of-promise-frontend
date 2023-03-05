@@ -8,6 +8,12 @@ import { jsonAbi } from '../utils/abi/0xdF41B10837760583eb632CD5C2d7723d0e2E54F5
 
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { PromiseCreation } from '../models/promise-creation.model';
+import { Chain } from '../models/chain.model';
+
+const chainContractAddress = {
+    base: '',
+    polygon: '0xdF41B10837760583eb632CD5C2d7723d0e2E54F5',
+}
 
 @Injectable({
     providedIn: 'root'
@@ -188,6 +194,13 @@ export class WalletService {
         this.connectedWallet = undefined;
 
         this.walletConnectionChanges = WalletStatus.disconnected;
+    }
+
+    public async setContract(chain: Chain) {
+        const contractAddress = chainContractAddress[chain];
+        const abiFile = await import(`../utils/abi/${contractAddress}`) as any;
+        this.iface = new ethers.utils.Interface(abiFile.jsonAbi || abiFile.jsonAbiMainNet);
+        this.sbtAbi = this.iface.format(ethers.utils.FormatTypes['full']);
     }
 
     public async getAddress(): Promise<string> {

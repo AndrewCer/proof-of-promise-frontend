@@ -29,6 +29,10 @@ h1 {
 }
 
 .token-image-container {
+    min-width: 256px;
+    display: flex;
+    justify-content: center;
+
     img {
         width: 100%;
         border-radius: 20px;
@@ -47,7 +51,6 @@ h1 {
     border-radius: 14px;
 
     img {
-        min-width: 256px;
         max-height: 100%;
         max-width: 100%;
         width: auto;

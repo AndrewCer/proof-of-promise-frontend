@@ -24,7 +24,7 @@ export class SnackBarTxnNotifyComponent {
 
   public openBlockExplorer() {
     if (this.data.contract === this.baseContractAddress || this.data.chain === Chain.base) {
-      window.open(`https://goerli.basescan.org/tx/${this.data.txnHash}`, '_blank')?.focus();
+      window.open(`${environment.baseScanUrl}/tx/${this.data.txnHash}`, '_blank')?.focus();
     }
     else {
       window.open(`${environment.polygonScanUrl}/tx/${this.data.txnHash}`, '_blank')?.focus();

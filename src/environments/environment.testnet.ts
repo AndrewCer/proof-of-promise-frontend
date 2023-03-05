@@ -6,5 +6,6 @@ export const environment = {
     rpcUrl: 'https://matic-mumbai.chainstacklabs.com',
     chainId: 80001,
   },
+  baseScanUrl: 'https://goerli.basescan.org',
   polygonScanUrl: 'https://mumbai.polygonscan.com',
 };

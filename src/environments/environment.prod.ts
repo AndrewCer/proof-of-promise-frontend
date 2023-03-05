@@ -6,5 +6,6 @@ export const environment = {
     rpcUrl: 'https://polygon-rpc.com/',
     chainId: 137,
   },
+  baseScanUrl: '',
   polygonScanUrl: 'https://polygonscan.com',
 };

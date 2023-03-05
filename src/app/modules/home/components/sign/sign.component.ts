@@ -133,8 +133,6 @@ export class SignComponent implements OnDestroy {
             this.currentRoute = routerEvent.url;
             this.noTokens = false;
 
-            console.log(params);
-
             if (params.get('hash')) {
                 contractRequestService.getPromise(params.get('hash') as string).pipe(
                     take(1)
@@ -290,23 +288,16 @@ export class SignComponent implements OnDestroy {
             origin: { x: 1 }
         });
 
-        console.log(1);
-
         await confetti;
-        console.log(2);
-        var myCanvas = document.createElement('canvas');
-        document.body.appendChild(myCanvas);
-        console.log(3);
-        var myConfetti = confetti.create(myCanvas, {
+        var confettiCanvase = document.createElement('confetti-canvas');
+        document.body.appendChild(confettiCanvase);
+        var covfefe = confetti.create(confettiCanvase, {
             resize: true,
             useWorker: true
         });
-        console.log(4);
-        myConfetti({
+        covfefe({
             particleCount: 100,
             spread: 160
-            // any other options from the global
-            // confetti function
         });
     }
 }

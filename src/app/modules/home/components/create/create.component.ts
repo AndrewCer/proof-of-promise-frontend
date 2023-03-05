@@ -39,7 +39,7 @@ enum PopOption {
 export class CreateComponent implements OnDestroy {
     public baseUrl = '';
     public chains = [
-        // Chain.base,
+        Chain.base,
         Chain.polygon,
     ];
     public copyLinkText = 'Copy';
@@ -83,7 +83,6 @@ export class CreateComponent implements OnDestroy {
         public dialog: MatDialog,
         public walletService: WalletService,
         private activatedRoute: ActivatedRoute,
-        private contractRequestService: ContractRequestService,
         private fileRequestService: FileRequestService,
         private formBuilder: FormBuilder,
         private router: Router,
@@ -184,6 +183,7 @@ export class CreateComponent implements OnDestroy {
 
         this.fileFormData.append('burnAuth', this.formControl['burnAuth'].value);
         this.fileFormData.append('creator', this.walletService.connectedWallet);
+        this.fileFormData.append('chain', this.formControl['chain'].value);
         // TODO(nocs): do price
         // this.fileFormData.append('price', this.formControl['price'].value);
         this.fileFormData.append('receivers', walletAddresses.join());
@@ -211,6 +211,8 @@ export class CreateComponent implements OnDestroy {
                 tokenUri: ipfsUri,
             }
 
+            // Set proper contract address
+            await this.walletService.setContract(this.formControl['chain'].value);
 
             const txn = await this.walletService.createPromise(promiseCreation);
 
@@ -297,7 +299,7 @@ export class CreateComponent implements OnDestroy {
         }
 
         if (this.formControl['chain'].value === Chain.base) {
-            window.open(`https://goerli.basescan.org/tx/${txn.hash}`, '_blank')?.focus();
+            window.open(`${environment.baseScanUrl}/tx/${txn.hash}`, '_blank')?.focus();
         }
         else {
             window.open(`${environment.polygonScanUrl}/tx/${txn.txn}`, '_blank')?.focus();
