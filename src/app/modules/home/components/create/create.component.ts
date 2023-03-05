@@ -215,9 +215,6 @@ export class CreateComponent implements OnDestroy {
                 }],
             });
         }
-
-        console.log('here?');
-        
         
         // Set proper contract address
         await this.walletService.setContract(this.formControl['chain'].value);
