@@ -141,8 +141,7 @@ export class SignComponent implements OnDestroy {
                 ).subscribe((apiResponse) => {
                     if (apiResponse.success) {
                         this.token = apiResponse.success;
-
-                        if (this.token.receivers && !this.token.receivers.includes(this.walletService.connectedWallet!)) {
+                        if (this.token.receivers && this.token.receivers.length && !this.token.receivers.includes(this.walletService.connectedWallet!)) {
                             this.isRestricted = true;
                         }
 
