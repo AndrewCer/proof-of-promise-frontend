@@ -1,5 +1,5 @@
 runtime: nodejs16
-service: default
+service: app-testnet
 
 instance_class: F1
 
